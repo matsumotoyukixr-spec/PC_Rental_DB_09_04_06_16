@@ -1,0 +1,6 @@
+@PC_Rental_DB_09_04_06_16.Server_HostAddress = http://localhost:5042
+
+GET {{PC_Rental_DB_09_04_06_16.Server_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
