@@ -60,6 +60,9 @@ export default function Dashboard({ onLogout, dashboardPage, setDashboardPage })
         alert('編集ボタンが押されました');
     };
 
+
+
+
      //<button className="edit-btn" onClick={handleEdit}><img src="/icons/edit.svg" alt="編集" /></button>
     */
 
