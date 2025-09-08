@@ -37,7 +37,6 @@ export default function UserList() {
 
     const handleEdit = (employeeNo) => {
         alert(`ユーザー ${employeeNo} の編集ボタンが押されました`);
-        // ポップアップ画面への遷移ロジックをここに実装
     };
 
     const handleToggleDetails = (employeeNo) => {
@@ -49,7 +48,8 @@ export default function UserList() {
     };
 
     return (
-        <>
+        // divで囲んでpanelクラスを適用
+        <div className="panel">
             <h1 className="panel-title">ユーザー一覧</h1>
             <div className="table-controls">
                 <div className="button-group">
@@ -130,6 +130,6 @@ export default function UserList() {
                     </table>
                 </div>
             )}
-        </>
+        </div>
     );
 }
