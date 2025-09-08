@@ -17,7 +17,7 @@ namespace PC_Rental_DB_09_04_06_16.Server.Controllers
             _connection = connection;
         }
 
-        // ユーザー情報を格納するためのクラス モデル）
+        // ユーザー情報を格納するためのクラス（モデル）
         public class UserInfo
         {
             public required string EmployeeNo { get; set; }
