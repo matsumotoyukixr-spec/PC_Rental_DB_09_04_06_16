@@ -1,3 +1,369 @@
+/* 共通のカラーとフォント設定 */
+:root { /* CSSカスタムプロパティ（変数）を定義する場所 */
+    --sidebar-w: 280px; /* サイドバーの幅を280pxとして変数に保存 */
+    --bg: #f5f7f9; /* アプリケーション全体の背景色を変数に保存 */
+    --sidebar: #c5c5c5; /* サイドバーの背景色を変数に保存 */
+    --panel: #e9e9e9; /* メインパネルの背景色を変数に保存 */
+}
+
+html, body, #root { /* HTML文書、body、ルート要素のスタイルをまとめて設定 */
+    height: 100%; /* 高さ（height）を親要素いっぱいに広げる */
+}
+
+body { /* bodyタグのスタイル */
+    margin: 0; /* bodyタグのデフォルトの余白をなくす */
+    background: var(--bg); /* 背景色に先ほど定義した変数（#f5f7f9）を適用 */
+    /* フォントファミリーを定義。左から順に適用され、システムにない場合は次のフォントが使われる */
+    font-family: "Segoe UI", "Hiragino Kaku Gothic ProN", Meiryo, system-ui, sans-serif;
+}
+
+/* 画面全体のレイアウト */
+.layout { /* 画面全体のレイアウトを定義するコンテナ */
+    min-height: 100vh; /* 画面の高さ（viewport height）を最低100%に設定 */
+    margin-left: var(--sidebar-w); /* 左側のサイドバーの幅分（280px）だけ、左の余白を空ける */
+}
+
+/* 左端固定のサイドバー */
+.sidebar { /* サイドバーのスタイル */
+    position: fixed; /* 画面の指定位置に要素を固定する */
+    left: 0; /* 画面の左端から0の位置に配置 */
+    top: 0; /* 画面の上端から0の位置に配置 */
+    bottom: 0; /* 画面の下端から0の位置に配置（これにより高さが100%になる） */
+    width: var(--sidebar-w); /* 幅をカスタムプロパティ（280px）に設定 */
+    background: var(--sidebar); /* 背景色をカスタムプロパティ（#c5c5c5）に設定 */
+    padding: 28px 24px; /* 上下28px、左右24pxの内側余白を設定 */
+    display: flex; /* 子要素をFlexboxで配置する */
+    flex-direction: column; /* 子要素を縦に並べる */
+    gap: 28px; /* 子要素間の間隔を28pxに設定 */
+    border-right: 1px solid #d9d9d9; /* 右側に1pxの実線ボーダーを設定 */
+}
+
+.hello { /* 「こんにちは」のスタイル */
+    font-size: 22px; /* フォントサイズを22pxに設定 */
+    color: #f3f3f3; /* フォントカラーを白に近いグレーに設定 */
+    letter-spacing: .5px; /* 文字間隔を0.5pxに設定 */
+    margin-top: 4px; /* 上部に4pxの余白を設定 */
+}
+
+.username { /* ユーザー名のスタイル */
+    margin-top: 6px; /* 上部に6pxの余白を設定 */
+    font-size: 28px; /* フォントサイズを28pxに設定 */
+    font-weight: 800; /* フォントの太さを800（太字）に設定 */
+    color: #fff; /* フォントカラーを白に設定 */
+}
+
+.menu { /* メニューコンテナ（貸出状況、機器一覧、ユーザー一覧のボタンの親要素） */
+    margin-top: 8px; /* 上部に8pxの余白を設定 */
+    display: flex; /* 子要素をFlexboxで配置する */
+    flex-direction: column; /* 子要素を縦に並べる */
+    gap: 36px; /* 子要素（ボタン）間の間隔を36pxに設定 */
+}
+
+.menu-btn { /* メニューボタンのスタイル */
+    width: 185px; /* 幅を185pxに設定 */
+    padding: 16px 14px; /* 上下16px、左右14pxの内側余白を設定 */
+    background: #fff; /* 背景色を白に設定 */
+    color: #222; /* フォントカラーを濃いグレーに設定 */
+    border: 1px solid #bdbdbd; /* 1pxの実線ボーダーを設定 */
+    border-radius: 10px; /* 角丸の半径を10pxに設定 */
+    font-size: 18px; /* フォントサイズを18pxに設定 */
+    cursor: pointer; /* マウスカーソルをポインターに変更 */
+    align-self: flex-start; /* 親要素の開始位置にボタンを配置（左揃え） */
+    box-shadow: 0 1px 0 rgba(0, 0, 0, .06); /* ボックスの影（X軸のオフセット0、Y軸のオフセット1px、ぼかし0、色） */
+}
+
+    .menu-btn:hover { /* メニューボタンにマウスカーソルが乗ったときのスタイル */
+        background: #f6f6f6; /* 背景色を少し薄いグレーに変更 */
+    }
+
+/* 一番下のLOGOUTボタン */
+.logout { /* LOGOUTボタンのスタイル */
+    margin-top: auto; /* 上部の余白を自動で調整し、要素を一番下に配置する */
+    width: 185px; /* 幅を185pxに設定 */
+    padding: 12px 14px; /* 上下12px、左右14pxの内側余白を設定 */
+    background: #ff6347; /* 背景色を赤色に設定 */
+    color: #111; /* フォントカラーを黒に設定 */
+    border: 1px solid #bdbdbd; /* 1pxの実線ボーダーを設定 */
+    border-radius: 8px; /* 角丸の半径を8pxに設定 */
+    font-weight: 700; /* フォントの太さを700（太字）に設定 */
+    cursor: pointer; /* マウスカーソルをポインターに変更 */
+}
+
+    .logout:hover { /* LOGOUTボタンにマウスカーソルが乗ったときのスタイル */
+        background: #ff7f50; /* 背景色を少し明るい赤に変更 */
+    }
+
+/* 右側の大きいカードを囲むコンテナ */
+.panel-container { /* 右側のメインコンテンツ全体を囲むコンテナ */
+    padding: 60px 64px; /* 上下60px、左右64pxの内側余白を設定 */
+}
+
+/* メインパネル自体のスタイル */
+.panel {
+    /* パネル内部の余白を確保 */
+    padding: 64px 72px;
+    /* 上下左右のパディングを増やしてサイズを調整するa*/
+    padding-right: 400px;
+    padding-bottom: 500px;
+    margin: 60px 64px;
+    background: var(--panel);
+    border-radius: 40px;
+    box-shadow: inset 0 0 0 1px rgba(0, 0, 0, .03);
+}
+
+/* 見出し（社員氏名） */
+.emp-name { /* 「社員氏名」の見出しのスタイル */
+    margin: 0 0 28px; /* 下部に28pxの余白を設定 */
+    font-size: 56px; /* フォントサイズを56pxに設定 */
+    font-weight: 800; /* フォントの太さを800（太字）に設定 */
+    letter-spacing: .5px; /* 文字間隔を0.5pxに設定 */
+    color: #213547; /* フォントカラーを濃いグレーに設定 */
+}
+
+/* ステータス行とバッジ */
+.status-row { /* 「貸出状態： なし」の行全体を囲むコンテナ */
+    display: flex; /* 子要素をFlexboxで配置する */
+    align-items: center; /* 子要素を垂直方向の中央に揃える */
+    gap: 18px; /* 子要素間の間隔を18pxに設定 */
+    margin-top: 24px; /* 上部に24pxの余白を設定 */
+    color: #333; /* フォントカラーを濃いグレーに設定 */
+    font-size: 22px; /* フォントサイズを22pxに設定 */
+}
+/* .status-rowが重複しているが、同じスタイルが適用される */
+
+.label { /* 「貸出状態：」のラベルのスタイル */
+    color: #444; /* フォントカラーを少し明るいグレーに設定 */
+}
+
+.badge { /* 「なし」や「貸出中」のバッジのスタイル */
+    display: inline-flex; /* インライン要素としてFlexboxを適用 */
+    align-items: center; /* 子要素（テキスト）を垂直方向の中央に揃える */
+    justify-content: center; /* 子要素（テキスト）を水平方向の中央に揃える */
+    min-width: 180px; /* 最小幅を180pxに設定 */
+    height: 64px; /* 高さを64pxに設定 */
+    padding: 0 24px; /* 左右に24pxの内側余白を設定 */
+    border-radius: 14px; /* 角丸の半径を14pxに設定 */
+    font-size: 34px; /* フォントサイズを34pxに設定 */
+    font-weight: 800; /* フォントの太さを800（太字）に設定 */
+    color: #fff; /* フォントカラーを白に設定 */
+}
+
+    .badge.good { /* 貸出状態が「なし」の場合のバッジのスタイル */
+        background: #6cab4d; /* 背景色を緑色に設定 */
+    }
+
+    .badge.bad { /* 貸出状態が「貸出中」の場合のバッジのスタイル */
+        background: #d2842d; /* 背景色を橙色に設定 */
+    }
+
+.detail-row { /* 貸出機器などの詳細行のスタイル */
+    margin: 18px 0; /* 上下18px、左右0の余白を設定 */
+    font-size: 20px; /* フォントサイズを20pxに設定 */
+    color: #222; /* フォントカラーを濃いグレーに設定 */
+}
+
+.return-btn { /* 返却ボタンのスタイル */
+    margin-left: auto; /* 左側の余白を自動で調整し、要素を右に寄せる */
+    display: inline-block; /* インラインブロック要素として配置 */
+    margin-top: 24px; /* 上部に24pxの余白を設定 */
+    padding: 18px 36px; /* 上下18px、左右36pxの内側余白を設定 */
+    border: none; /* ボーダーをなくす */
+    border-radius: 18px; /* 角丸の半径を18pxに設定 */
+    background: #9ed082; /* 背景色を薄い緑色に設定 */
+    color: #fff; /* フォントカラーを白に設定 */
+    font-weight: 800; /* フォントの太さを800（太字）に設定 */
+    font-size: 24px; /* フォントサイズを24pxに設定 */
+    cursor: pointer; /* マウスカーソルをポインターに変更 */
+    box-shadow: 0 2px 0 rgba(0, 0, 0, .08); /* ボックスの影を設定 */
+}
+
+    .return-btn:hover { /* 返却ボタンにマウスカーソルが乗ったときのスタイル */
+        filter: brightness(0.98); /* 明度をわずかに下げる */
+    }
+
+/* UserList.jsxのスタイル */
+.panel-title { /* UserList.jsxで使用されるタイトル */
+    font-size: 2rem; /* フォントサイズを2remに設定 */
+    font-weight: bold; /* フォントを太字にする */
+    text-align: center; /* テキストを中央揃えにする */
+    margin-bottom: 2rem; /* 下部に2remの余白を設定 */
+    padding-bottom: 0.5rem; /* 下部に0.5remの内側余白を設定 */
+    border-bottom: 2px solid #ccc; /* 下部に2pxの実線ボーダーを設定 */
+    color: black; /* フォントカラーを黒に設定 */
+}
+
+/*/
+
+/* 画面全体の土台 */
+/*:root {
+    --sidebar-w: 280px;
+    --bg: #f5f7f9;
+    --sidebar: #c5c5c5;
+    --panel: #e9e9e9;
+}
+
+html, body, #root {
+    height: 100%;
+}
+
+body {
+    margin: 0;
+    background: var(--bg);
+    font-family: "Segoe UI", "Hiragino Kaku Gothic ProN", Meiryo, system-ui, sans-serif;
+}
+
+.layout {
+    min-height: 100vh;
+    display: grid;
+    grid-template-columns: var(--sidebar-w) 1fr;*/ /* ← 左がサイドバー、右がメイン */
+/*}*/
+
+/* サイドバー */
+/*.sidebar {
+    background: var(--sidebar);
+    padding: 28px 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 28px;
+    border-right: 1px solid #d9d9d9;
+}
+
+.hello {
+    font-size: 22px;
+    color: #f3f3f3;
+    letter-spacing: .5px;
+    margin-top: 4px;
+}
+
+.username {
+    margin-top: 6px;
+    font-size: 28px;
+    font-weight: 800;
+    color: #fff;
+}*/
+
+/* メニュー群（白い角丸のボタン） */
+/*.menu {
+    margin-top: 8px;
+    display: flex;
+    flex-direction: column;
+    gap: 36px;*/ /* ボタン間の余白を広めに */
+/*}
+
+.menu-btn {
+    width: 185px;
+    padding: 16px 14px;
+    background: #fff;
+    color: #222;
+    border: 1px solid #bdbdbd;
+    border-radius: 10px;
+    font-size: 18px;
+    cursor: pointer;
+    align-self: flex-start;
+    box-shadow: 0 1px 0 rgba(0,0,0,.06);
+}
+
+    .menu-btn:hover {
+        background: #fafafa;
+    }*/
+
+/* 一番下に固定される LOGOUT */
+/*.logout {
+    margin-top: auto;*/ /* ← これで最下部へ */
+/*width: 185px;
+    padding: 12px 14px;
+    background: #ff6347;
+    color: #111;
+    border: 1px solid #bdbdbd;
+    border-radius: 8px;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+    .logout:hover {
+        background: #ff7f50;
+    }*/
+
+/* 右側の大きい角丸パネル */
+/*.panel {
+    padding: 64px 72px;
+    margin: 60px 64px;
+    background: var(--panel);
+    border-radius: 40px;
+    box-shadow: inset 0 0 0 1px rgba(0,0,0,.03);
+}*/
+
+/* 見出し（社員氏名）を大きく */
+/*.emp-name {
+    margin: 0 0 28px;
+    font-size: 56px;
+    font-weight: 800;
+    letter-spacing: .5px;
+}*/
+
+/* 「貸出状態： なし」 行とバッジ */
+/*.status-row {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    margin-top: 24px;
+    color: #333;
+    font-size: 22px;
+}
+
+.label {
+    color: #444;
+}
+
+.badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 180px;
+    height: 64px;
+    padding: 0 24px;
+    border-radius: 14px;
+    font-size: 34px;
+    font-weight: 800;
+    color: #fff;
+}
+
+    .badge.good {
+        background: #6cab4d;
+    }*/
+/* なし → 緑 */
+/*.badge.bad {
+        background: #d2842d;
+    }*/
+/* 貸出中 → 橙 */
+
+/* 幅が狭いときの縮小 */
+/*@media (max-width: 960px) {
+    :root {
+        --sidebar-w: 220px;
+    }
+
+    .panel {
+        margin: 32px;
+        padding: 40px;
+        border-radius: 28px;
+    }
+
+    .emp-name {
+        font-size: 40px;
+    }
+
+    .badge {
+        min-width: 140px;
+        height: 52px;
+        font-size: 26px;
+    }
+}*/
+
+
+
+/*
+
 body, html {
     margin: 0;
     padding: 0;
@@ -35,7 +401,7 @@ body, html {
     flex-grow: 1;
     padding: 2.75rem;
     margin-left: 300px;
-    background-color: #e9e9e9; /* 背景色を統一 */
+    background-color: #e9e9e9; /* 背景色を統一 
     height: 100vh;
     overflow-y: auto;
 }
@@ -169,7 +535,7 @@ body, html {
     padding: 1.5rem;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     
-    max-width: none; /* 最大幅を無効化 */
+    max-width: none; /* 最大幅を無効化 
     
     max-height: 70vh;
 }
@@ -207,3 +573,5 @@ body, html {
     width: 50px;
     text-align: center;
 }
+
+*/

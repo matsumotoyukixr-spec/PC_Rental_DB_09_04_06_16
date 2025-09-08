@@ -20,15 +20,15 @@ namespace PC_Rental_DB_09_04_06_16.Server.Controllers
         // ユーザー情報を格納するためのクラス（モデル）
         public class UserInfo
         {
-            public string EmployeeNo { get; set; }
-            public string Name { get; set; }
-            public string NameKana { get; set; }
-            public string Department { get; set; }
-            public string TelNo { get; set; }
-            public string MailAddress { get; set; }
+            public required string EmployeeNo { get; set; }
+            public required string Name { get; set; }
+            public required string NameKana { get; set; }
+            public required string Department { get; set; }
+            public required string TelNo { get; set; }
+            public required string MailAddress { get; set; }
             public int Age { get; set; }
-            public string Position { get; set; }
-            public string AccountLevel { get; set; }
+            public required string Position { get; set; }
+            public required string AccountLevel { get; set; }
             public bool DeleteFlag { get; set; }
         }
 

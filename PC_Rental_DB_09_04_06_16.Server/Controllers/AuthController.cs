@@ -4,7 +4,7 @@ using System.Data;
 using System.Security.Cryptography;
 using System.Text;
 
-namespace WebApp1.Server.Controllers
+namespace PC_Rental_DB_09_04_06_16.Server.Controllers
 {
     [ApiController]
     [Route("[controller]")]
