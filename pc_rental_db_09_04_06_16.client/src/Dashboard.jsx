@@ -1,341 +1,152 @@
-﻿import { useEffect, useMemo, useState } from 'react';
-import './Dashboard.css';
+﻿import { useEffect, useMemo, useState, useCallback } from "react"; 
+import "./Dashboard.css";
+import "./StatusView.css";
 
-/**
- * ダッシュボード画面のメインコンテンツ
- * - /auth/me?employeeNo=... で氏名と貸出状況を取得
- * - 貸出中のときは機器・貸出日・締切日と「返却」ボタンを表示
- * - 返却押下で /auth/return にPOST → 再取得して画面更新
- */
-// onLogout, dashboardPage, setDashboardPage をpropsから削除
-export default function Dashboard() {
+import RentalsList from "./RentalsList.jsx";
+import DeviceList from "./DeviceList.jsx";
+import UsersList from "./UsersList.jsx";
+
+export default function Dashboard({ onLogout }) {
+    // ログイン情報
     const auth = useMemo(() => {
-        try { return JSON.parse(localStorage.getItem('auth') || '{}'); }
+        try { return JSON.parse(localStorage.getItem("auth") || "{}"); }
         catch { return {}; }
     }, []);
+    const employeeNo = auth?.employeeNo;
 
-    const [me, setMe] = useState(null);
-    //const [loading, setLoading] = useState(true);
-    //const [err, setErr] = useState('');
-
-    const fmtDate = (d) => (d ? new Date(d).toLocaleDateString() : '-');
-
-    // ユーザー情報の取得
-    useEffect(() => {
-        const emp = auth?.employeeNo;
-        if (!emp) return;
-        (async () => {
-            //setLoading(true);
-            //setErr('');
-            /*
-            try {
-                const res = await fetch(`/auth/me?employeeNo=${encodeURIComponent(emp)}`);
-                const data = await res.json();
-                if (!res.ok) throw new Error(data?.message || '取得に失敗しました');
-                setMe(data);
-            } catch (e) {
-                setErr(e.message || 'サーバーに接続できません');
-            } finally {
-                setLoading(false);
-            }
-            */
-        })();
-    }, [auth?.employeeNo]);
-
-    // 返却処理
-    const handleReturn = async () => {
-        if (!me?.employeeNo) return;
-        if (!window.confirm('返却処理を実行します。よろしいですか？')) return;
-
-        try {
-            const res = await fetch('/auth/return', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ employeeNo: me.employeeNo })
-            });
-            const data = await res.json();
-            if (!res.ok) throw new Error(data?.message || '返却に失敗しました');
-
-            // 再取得して画面更新
-            const r = await fetch(`/auth/me?employeeNo=${encodeURIComponent(me.employeeNo)}`);
-            const next = await r.json();
-            if (r.ok) setMe(next);
-            alert('返却が完了しました');
-        } catch (e) {
-            alert(e.message || '返却に失敗しました');
-        }
-    };
-
-    return (
-        // サイドバーとレイアウトdivを削除
-        
-         <div className="panel">
-            <h1 className="emp-name">{me?.name || '社員氏名'}</h1>
-
-            <div className="status-row">
-                <span className="label">貸出状態：</span>
-                <span className={`badge ${me?.rental?.status === '貸出中' ? 'bad' : 'good'}`}>
-                    {me?.rental?.status === '貸出中' ? '貸出中' : 'なし'}
-                </span>
-            </div>
-
-            {me?.rental?.status === '貸出中' && (
-                <>
-                    <div className="detail-row">貸出機器：<strong>{me.rental.assetNo || '-'}</strong></div>
-                    <div className="detail-row">貸 出 日：{fmtDate(me.rental.rentalDate)}</div>
-                    <div className="detail-row">締 切 日：{fmtDate(me.rental.dueDate)}</div>
-                    <button className="return-btn" onClick={handleReturn}>返却</button>
-                </>
-            )}
-        </div>
-        
-    );
-}
-
-/*
-import { useEffect, useMemo, useState } from 'react';
-import UserList from './UserList.jsx';
-import './Dashboard.css';
-
-export default function Dashboard({ onLogout, dashboardPage, setDashboardPage }) {
-    const auth = useMemo(() => {
-        try { return JSON.parse(localStorage.getItem('auth') || '{}'); }
-        catch { return {}; }
-    }, []);
-
+    // 画面状態
+    const [view, setView] = useState("status"); // "status" | "rentals" | "devices" | "users"
     const [me, setMe] = useState(null);
     const [loading, setLoading] = useState(true);
-    const [err, setErr] = useState('');
+    const [err, setErr] = useState("");
 
-    const fmtDate = (d) => (d ? new Date(d).toLocaleDateString() : '-');
+    const fmtDate = (d) => (d ? new Date(d).toLocaleDateString() : "-");
+
+    // 自分のレンタル状況を取得
+    const loadMe = useCallback(async () => { // useCallbackでラップ
+        if (!employeeNo) return;
+        setLoading(true);
+        setErr("");
+        try {
+            const res = await fetch(`/auth/me?employeeNo=${encodeURIComponent(employeeNo)}`);
+            if (!res.ok) {
+                const text = await res.text().catch(() => "");
+                throw new Error(text || "取得に失敗しました");
+            }
+            const data = await res.json();
+            setMe(data);
+        } catch (e) {
+            setErr(e.message || "サーバーに接続できません");
+        } finally {
+            setLoading(false);
+        }
+    }, [employeeNo]); // employeeNoを依存配列に追加
 
     useEffect(() => {
-        const emp = auth?.employeeNo;
-        if (!emp) return;
-        (async () => {
-            setLoading(true);
-            setErr('');
-            try {
-                const res = await fetch(`/auth/me?employeeNo=${encodeURIComponent(emp)}`);
-                const data = await res.json();
-                if (!res.ok) throw new Error(data?.message || '取得に失敗しました');
-                setMe(data);
-            } catch (e) {
-                setErr(e.message || 'サーバーに接続できません');
-            } finally {
-                setLoading(false);
-            }
-        })();
-    }, [auth?.employeeNo]);
+        loadMe();
+    }, [loadMe]); // loadMeを依存配列に追加
 
+    // 返却
     const handleReturn = async () => {
         if (!me?.employeeNo) return;
-        if (!window.confirm('返却処理を実行します。よろしいですか？')) return;
-
+        if (!window.confirm("返却処理を実行します。よろしいですか？")) return;
         try {
-            const res = await fetch('/auth/return', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ employeeNo: me.employeeNo })
+            const res = await fetch("/auth/return", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ employeeNo: me.employeeNo }),
             });
-            const data = await res.json();
-            if (!res.ok) throw new Error(data?.message || '返却に失敗しました');
-
-            const r = await fetch(`/auth/me?employeeNo=${encodeURIComponent(me.employeeNo)}`);
-            const next = await r.json();
-            if (r.ok) setMe(next);
-            alert('返却が完了しました');
+            const data = await res.json().catch(() => ({}));
+            if (!res.ok) throw new Error(data?.message || "返却に失敗しました");
+            await loadMe();
+            setView("status");
+            alert("返却が完了しました");
         } catch (e) {
-            alert(e.message || '返却に失敗しました');
+            alert(e.message || "返却に失敗しました");
         }
     };
 
-    ///*
-
-    /*
-    const handleEdit = () => {
-        alert('編集ボタンが押されました');
-    };
-    */
-
-
-
-
-     //<button className="edit-btn" onClick={handleEdit}><img src="/icons/edit.svg" alt="編集" /></button>
-    
-     /*
     return (
         <div className="layout">
-            <aside className="sidebar">
+            {/* 左サイドバー */}
+            <aside className="sidebar fixed">
                 <div className="hello">こんにちは</div>
-                <div className="username">{me?.name || 'USER名'}</div>
+                <div className="username">{me?.name || "USER名"}</div>
+
                 <nav className="menu">
-                    <div className="menu-item">
-                        <button className="menu-btn" onClick={() => setDashboardPage('dashboard')}>貸出状況</button>
-                    </div>
-                    <div className="menu-item">
-                        <button className="menu-btn">機器一覧</button>
-                    </div>
-                    <div className="menu-item">
-                        <button className="menu-btn" onClick={() => setDashboardPage('userList')}>ユーザー一覧</button>
-                    </div>
+                    <button className={`menu-btn ${view === "rentals" ? "active" : ""}`} onClick={() => setView("rentals")}>
+                        貸出状況
+                    </button>
+                    <button className={`menu-btn ${view === "devices" ? "active" : ""}`} onClick={() => setView("devices")}>
+                        機器一覧
+                    </button>
+                    <button className={`menu-btn ${view === "users" ? "active" : ""}`} onClick={() => setView("users")}>
+                        ユーザー一覧
+                    </button>
                 </nav>
+
                 <button className="logout" onClick={onLogout}>LOGOUT</button>
             </aside>
-            <main className="panel">
-                {loading && <div>読み込み中...</div>}
-                {err && <div className="error">{err}</div>}
-                {!loading && !err && (
-                    <>
-                        {dashboardPage === 'dashboard' && (
+
+            {/* 右側：個人ステータス */}
+            {view === "status" && (
+                <main className="panel flat">
+                    <div className="status-card">
+                        {loading ? (
+                            <div className="status-loading">読み込み中...</div>
+                        ) : err ? (
+                            <div className="status-error">{err}</div>
+                        ) : (
                             <>
-                                <h1 className="emp-name">{me?.name || '社員氏名'}</h1>
+                                <h1 className="status-title">{me?.name || "社員氏名"}</h1>
+
                                 <div className="status-row">
-                                    <span className="label">貸出状態：</span>
-                                    <span className={`badge ${me?.rental?.status === '貸出中' ? 'bad' : 'good'}`}>
-                                        {me?.rental?.status === '貸出中' ? '貸出中' : 'なし'}
-                                    </span>
+                                    <span className="status-label">貸出状態：</span>
+                                    {me?.rental ? (
+                                        <>
+                                            <span className="status-badge bad">貸出中</span>
+                                        </>
+                                    ) : (
+                                        <span className="status-badge good">なし</span>
+                                    )}
                                 </div>
-                                {me?.rental?.status === '貸出中' && (
+
+                                {me?.rental && (
                                     <>
-                                        <div className="detail-row">貸出機器：<strong>{me.rental.assetNo || '-'}</strong></div>
-                                        <div className="detail-row">貸 出 日：{fmtDate(me.rental.rentalDate)}</div>
-                                        <div className="detail-row">締 切 日：{fmtDate(me.rental.dueDate)}</div>
-                                        <button className="return-btn" onClick={handleReturn}>返却</button>
+                                        <div className="status-detail">貸出機器：<strong>{me.rental.assetNo || "-"}</strong></div>
+                                        <div className="status-detail">貸 出 日：{fmtDate(me.rental.rentalDate)}</div>
+                                        <div className={`status-detail ${me.rental.overdue ? "overdue" : ""}`}>
+                                            返却締切日：{fmtDate(me.rental.dueDate)}
+                                        </div>
+                                        <button className="status-return" onClick={handleReturn}>返却</button>
                                     </>
                                 )}
                             </>
                         )}
-                        {dashboardPage === 'userList' && <UserList />}
-                    </>
-                )}
-            </main>
+                    </div>
+                </main>
+            )}
+
+            {/* 右側：貸出状況一覧 */}
+            {view === "rentals" && (
+                <main className="panel flat">
+                    <RentalsList />
+                </main>
+            )}
+
+            {/* 右側：機器一覧 */}
+            {view === "devices" && (
+                <main className="panel flat">
+                    <DeviceList />
+                </main>
+            )}
+
+            {/* 右側：ユーザー一覧（未実装プレースホルダ） */}
+            {view === "users" && (
+                <main className="panel flat">
+                    <UsersList />
+                </main>
+            )}
         </div>
     );
 }
-//*/
-
-
-
-//import { useEffect, useMemo, useState } from 'react';
-//import './Dashboard.css';
-
-/**
- * ダッシュボード画面（左：サイドバー固定、右：メインカード）
- * - /auth/me?employeeNo=... で氏名と貸出状況を取得
- * - 貸出中のときは機器・貸出日・締切日と「返却」ボタンを表示
- * - 返却押下で /auth/return にPOST → 再取得して画面更新
- */
-
-/*
-export default function Dashboard({ onLogout }) {
-    const auth = useMemo(() => {
-        try { return JSON.parse(localStorage.getItem('auth') || '{}'); }
-        catch { return {}; }
-    }, []);
-
-    const [me, setMe] = useState(null);
-    const [loading, setLoading] = useState(true);
-    const [err, setErr] = useState('');
-
-    const fmtDate = (d) => (d ? new Date(d).toLocaleDateString() : '-');
-
-    // ユーザー情報の取得
-    useEffect(() => {
-        const emp = auth?.employeeNo;
-        if (!emp) return;
-        (async () => {
-            setLoading(true);
-            setErr('');
-            try {
-                const res = await fetch(`/auth/me?employeeNo=${encodeURIComponent(emp)}`);
-                const data = await res.json();
-                if (!res.ok) throw new Error(data?.message || '取得に失敗しました');
-                setMe(data);
-            } catch (e) {
-                setErr(e.message || 'サーバーに接続できません');
-            } finally {
-                setLoading(false);
-            }
-        })();
-    }, [auth?.employeeNo]);
-
-    // 返却処理
-    const handleReturn = async () => {
-        if (!me?.employeeNo) return;
-        if (!window.confirm('返却処理を実行します。よろしいですか？')) return;
-
-        try {
-            const res = await fetch('/auth/return', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ employeeNo: me.employeeNo })
-            });
-            const data = await res.json();
-            if (!res.ok) throw new Error(data?.message || '返却に失敗しました');
-
-            // 再取得して画面更新
-            const r = await fetch(`/auth/me?employeeNo=${encodeURIComponent(me.employeeNo)}`);
-            const next = await r.json();
-            if (r.ok) setMe(next);
-            alert('返却が完了しました');
-        } catch (e) {
-            alert(e.message || '返却に失敗しました');
-        }
-    };
-
-    return (
-        <div className="layout">
-            {/* 左サイドバー：常にページ左端に固定 *//*}
-<aside className="sidebar">
-    <div className="hello">こんにちは</div>
-    <div className="username">{me?.name || 'USER名'}</div>
-
-    <nav className="menu">
-        <button className="menu-btn">貸出状況</button>
-        <button className="menu-btn">機器一覧</button>
-        <button className="menu-btn">ユーザー一覧</button>
-    </nav>
-
-    <button className="logout" onClick={onLogout}>LOGOUT</button>
-</aside>
-
-{/* 右の大きいカード *//*}
-<main className="panel">
-    {loading && <div>読み込み中...</div>}
-    {err && <div className="error">{err}</div>}
-
-    {!loading && !err && (
-        <>
-            <h1 className="emp-name">{me?.name || '社員氏名'}</h1>
-
-            {/* ステータス（貸出中=橙/なし=緑） *//*}
-<div className="status-row">
-    <span className="label">貸出状態：</span>
-    <span className={`badge ${me?.rental?.status === '貸出中' ? 'bad' : 'good'}`}>
-        {me?.rental?.status === '貸出中' ? '貸出中' : 'なし'}
-    </span>
-</div>
-
-{/* 貸出中のみ、詳細＋返却ボタン *//*}
-{me?.rental?.status === '貸出中' && (
-    <>
-        <div className="detail-row">貸出機器：<strong>{me.rental.assetNo || '-'}</strong></div>
-        <div className="detail-row">貸 出 日：{fmtDate(me.rental.rentalDate)}</div>
-        <div className="detail-row">締 切 日：{fmtDate(me.rental.dueDate)}</div>
-
-        <button className="return-btn" onClick={handleReturn}>返却</button>
-    </>
-)}
-</>
-)}
-</main>
-</div>
-);
-}
-*/
-
-
-
-
-///*

@@ -1,0 +1,639 @@
+﻿/* CSSカスタムプロパティ（変数）を定義。デザインの一貫性を保つために使います */
+:root {
+    --sidebar-w: 320px; /* サイドバーの幅 */
+    --panel-gutter: 48px; /* パネル（メインコンテンツ）の左右の余白 */
+    --panel-max: 1200px; /* パネルの最大幅 */
+    --panel-pad: 16px; /* パネルの内側の余白*/
+    --gray-100: #f3f4f6; /* 薄いグレー */
+    --gray-200: #e5e7eb; /* 少し濃いグレー */
+    --gray-300: #d1d5db; /* 濃いグレー */
+    --text: #1f2937; /* 暗い文字色 */
+    --muted: #6b7280; /* 薄い文字色 */
+    --primary: #2563eb; /* プライマリカラー（青） */
+    --ok: #16a34a; /* 成功を示す色（緑） */
+    --danger: #dc2626; /* 危険を示す色（赤） */
+}
+
+
+/* 機器一覧用の“丸背景”カード（貸出状況より少し広め） */
+/* カード風の背景を持つコンテナ（機器一覧のメインカード）に適用するスタイル */
+.devices-card {
+    /* `position: absolute`と`top`、`left`は、他の要素の配置に影響するため、
+       通常は使用しません。レイアウトが崩れる原因となります。 */
+    position: absolute; /* 親要素を基準に配置を決定 */
+    top: 75px; /* 親要素の上端から25pxの位置に配置 */
+    left: 450px; /* 親要素の左端から0pxの位置に配置 */
+    width: min(1200px, calc(100vw - var(--sidebar-w) - 24px)); /* 幅を計算して設定 */
+    padding: var(--panel-pad); /* パネルの内側余白 */
+
+
+    /*
+    width: min(1200px, calc(100vw - var(--sidebar-w) - 24px)); /* 幅を計算して設定 *
+    margin-left: 16px 8px 24px 8px; /* この行は無効なため、意図したように動作しません *
+    padding: var(--panel-pad); /* パネルの内側余白 *
+    */
+
+    background: linear-gradient(180deg, #f6f6f6 0%, #e9e9e9 100%); /* グラデーション背景 */
+    border-radius: 32px; /* 角を32px丸める */
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.06) inset, 0 8px 24px rgba(0, 0, 0, 0.06); /* 内側と外側の影 */
+    /*
+    width: min(1200px, calc(100vw - var(--sidebar-w) - 24px));
+    margin-left: 16px 8px 24px 8px;
+    padding: var(--panel-pad);
+    background: #ececec;
+    background: linear-gradient(180deg,#f6f6f6 0%,#e9e9e9 100%);
+    border-radius: 32px;
+    box-shadow: 0 12px 30px rgba(0,0,0,.06) inset, 0 8px 24px rgba(0,0,0,.06);
+    */
+    /*
+    position: absolute; /* 親要素を基準に配置を決定 *
+    top: 25px; /* 親要素の上端から25pxの位置に配置 *
+    left: 0px; /* 親要素の左端から0pxの位置に配置 *
+    width: min(1275px, calc(100vw - var(--sidebar-w) - 24px)); /* 幅を計算して設定 *
+    /* `min()`関数は、2つの値のうち小さい方を幅として使用します。
+       - 1275px（最大幅）
+       - `calc(...)`（画面幅からサイドバー幅と余白を引いた値） *
+    /* `margin-left`の記述は無効です。
+       `margin`は `margin: 上 左右 下;` または `margin: 上下 左右;` のように設定します。
+       この行は無視されるか、意図しない挙動を引き起こす可能性があります。 *
+    margin-left: 16px 8px 24px 8px; /* この行は無効なため、意図したように動作しません *
+    padding: var(--panel-pad); /* パネルの内側余白 *
+    background: linear-gradient(180deg, #f6f6f6 0%, #e9e9e9 100%); /* グラデーション背景 *
+    border-radius: 32px; /* 角を32px丸める *
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.06) inset, 0 8px 24px rgba(0, 0, 0, 0.06); /* 内側と外側の影 *
+    */
+}
+
+/* --- 外側パネルの余白 --- */
+
+
+/* ① 親の panel.flat の左余白をなくす（デバイス一覧のときだけ） */
+/* .panelと.flatの両方が指定された要素に適用するスタイル */
+.panel.flat {
+    padding-left: 150px; /* 左側に150pxのパディングを設定 */
+    padding-right: 0; /* 右側のパディングを0に設定 */
+}
+
+/* ページ骨格 */
+/* ページ全体のコンテナ（ユーザー一覧の中身）に適用するスタイル */
+.device-page {
+    width: 100%; /* 親要素の幅いっぱいに広げる */
+    margin: 0 auto; /* 上下0、左右自動で中央寄せ */
+    padding: 0 6px 20px; /* 内側の余白：上0、左右6px、下20px */
+}
+
+/* タイトルとツールバー（任意） */
+/* ページタイトルに適用するスタイル */
+.page-title {
+    text-align: center; /* テキストを中央揃えにする */
+    font-size: 24px; /* フォントサイズを24pxに設定 */
+    font-weight: 700; /* フォントを太字にする */
+    letter-spacing: 0.08em; /* 文字間隔を広げる */
+}
+
+/* 左右に分けて配置するツールバー */
+/* ツールバーの左右グループに適用するFlexboxスタイル */
+.toolbar.two-sides {
+    display: flex; /* Flexboxを適用 */
+    align-items: center; /* 垂直方向の中央に揃える */
+    justify-content: space-between; /* 子要素（左右のグループ）を両端に配置 */
+    gap: 12px; /* 子要素間の隙間を12pxに設定 */
+    margin: 8px 6px 12px; /* 外側余白：上8px、左右6px、下12px */
+}
+
+    /* ツールバーの左右グループ内の要素に適用するスタイル */
+    .toolbar.two-sides .left-group,
+    .toolbar.two-sides .right-group {
+        display: flex; /* Flexboxを適用 */
+        align-items: center; /* 垂直方向の中央に揃える */
+        gap: 10px; /* 子要素間の隙間を10pxに設定 */
+    }
+
+/*
+.toolbar .left-group,
+.toolbar .right-group {
+    display: flex; /* Flexboxを適用 *
+    align-items: center; /* 垂直方向の中央に揃える *
+    gap: 10px; /* 子要素間の隙間を10pxに設定 *
+}
+*/
+
+/* 標準ボタンに適用するスタイル */
+.btn {
+    border: 1px solid #cbd5e1; /* 枠線を1px、実線、薄いグレーに設定 */
+    background: #fff; /* 背景色を白に設定 */
+    border-radius: 8px; /* 角を8px丸める */
+    padding: 6px 10px; /* 内側余白を上下6px、左右10pxに設定 */
+    cursor: pointer; /* マウスカーソルをポインターに変更 */
+
+    /*
+    border: 1px solid #cbd5e1;
+    background: #fff;
+    border-radius: 8px;
+    padding: 6px 10px;
+    cursor: pointer;
+    */
+
+    /*
+    border: 1px solid #cbd5e1; /* 枠線を1px、実線、薄いグレーに設定 *
+    background: #fff; /* 背景色を白に設定 *
+    border-radius: 8px; /* 角を8px丸める *
+    padding: 6px 10px; /* 内側余白を上下6px、左右10pxに設定 *
+    cursor: pointer; /* マウスカーソルをポインターに変更 *
+    */
+}
+
+    /* ボタンがアクティブ（選択中）のときのスタイル */
+    .btn.active {
+        background: #111827; /* 背景色を濃いグレーに設定 */
+        color: #fff; /* 文字色を白に設定 */
+    }
+
+    /* ボタンにマウスカーソルが乗ったときのスタイル */
+    .btn:hover {
+        background: var(--gray-100); /* 背景色を`--gray-100`に設定 */
+    }
+
+    /* ボタンがアクティブなときのスタイル（ホバーとは別に） */
+    .btn.active {
+        border-color: var(--primary); /* 枠線の色を`--primary`に設定 */
+        box-shadow: 0 0 0 2px rgba(59,130,246,.15) inset; /* 内側に影を付ける */
+    }
+
+    /* プライマリボタンに適用するスタイル */
+    .btn.primary {
+        background: var(--ok); /* 背景色を`--ok`に設定 */
+        border-color: var(--ok); /* 枠線の色を`--ok`に設定 */
+        color: #fff; /* 文字色を白に設定 */
+    }
+
+        /* プライマリボタンにマウスカーソルが乗ったときのスタイル */
+        .btn.primary:hover {
+            opacity: .9; /* 透明度を90%にする */
+        }
+
+
+
+/* ====== テーブルエリア ====== */
+
+/* 表示領域：縦スクロール、横は初期は無し */
+.table-viewport {
+    max-height: 62vh;
+    overflow-y: auto; /* 縦方向のコンテンツがはみ出たらスクロールバーを表示 */
+    overflow-x: hidden; /* 横方向のコンテンツがはみ出てもスクロールバーを表示しない */
+    padding-right: 4px; /* 右側に4pxの内側余白 */
+    border: 1px solid var(--gray-200); /* 薄いグレーの枠線 */
+    background: #fff; /* 背景色を白に設定 */
+
+    /*
+    max-height: 62vh;
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding-right: 4px;
+    */
+
+    /*
+    height: calc(100vh - 260px); /* 最大高さをビューポートの高さから260px引いた値に設定 *
+    overflow-y: auto; /* 縦方向のコンテンツがはみ出たらスクロールバーを表示 *
+    overflow-x: hidden; /* 横方向のコンテンツがはみ出てもスクロールバーを表示しない *
+    padding-right: 4px; /* 右側に4pxの内側余白 *
+    border-radius: 16px; /* 角を16px丸める *
+    border: 1px solid var(--gray-200); /* 薄いグレーの枠線 *
+    background: #fff; /* 背景色を白に設定 *
+    */
+}
+
+
+
+/* ====== 表本体の横スクロール制御 ====== */
+
+
+/* 表本体の横スクロールを制御するラッパーに適用するスタイル */
+.table-wrapper {
+    max-width: none; /* 最大幅を無効化 */
+    width: 100%; /* 親要素の幅いっぱいに広げる */
+    overflow-x: hidden; /* 横方向のスクロールバーを非表示にする */
+}
+
+
+/* テーブルの上部に表示する横スクロールバーに適用するスタイル */
+.hscroll-top {
+    height: 14px; /* 高さを14pxに設定 */
+    overflow-x: auto; /* 横方向のコンテンツがはみ出たらスクロールバーを表示 */
+    overflow-y: hidden; /* 縦方向のスクロールバーは非表示 */
+    margin: 6px 6px 10px; /* 外側余白：上6px、左右6px、下10px */
+    border-radius: 6px; /* 角を6px丸める */
+    background: #f2f3f5; /* 薄いグレーの背景色 */
+}
+
+    /* スクロールバーの見た目をカスタマイズ（Chrome/Edge向け） */
+    .hscroll-top::-webkit-scrollbar {
+        height: 12px; /* スクロールバーの高さを12pxに設定 */
+    }
+
+    .hscroll-top::-webkit-scrollbar-thumb {
+        background: #cbd5e1; /* スクロールバーのツマミの色を薄いグレーに設定 */
+        border-radius: 6px; /* ツマミの角を丸くする */
+    }
+
+
+/* 詳細ONのときだけ横スクロールを許可 */
+/* .table-wrapperが.with-x-scrollクラスを持つ場合に適用するスタイル */
+.table-wrapper.with-x-scroll {
+    overflow-x: auto; /* 横方向のスクロールを許可 */
+}
+
+
+/* ====== テーブルの見た目と列幅 ====== */
+
+/* device-tableクラスを持つtable要素に適用するスタイル */
+.device-table {
+    width: 1090px; /* 8 列が見切れない幅。必要なら 1180〜1320 の範囲で微調整 */
+    border-collapse: separate; /* セルの境界線を個別に描画 */
+    border-spacing: 0; /* セル間の隙間を0にする */
+    background: #fff; /* 背景色を白に設定 */
+    border-radius: 12px; /* 角を12px丸める */
+    overflow: hidden; /* はみ出たコンテンツを隠す */
+    /*
+    width: 1090px; /* 8 列が見切れない幅。必要なら 1180〜1320 の範囲で微調整 *
+    border-collapse: separate;
+    border-spacing: 0;
+    background: #fff;
+    border-radius: 12px;
+    overflow: hidden;
+    */
+    /*
+    width: 100%; /* 親要素の幅いっぱいに広げる *
+    min-width: 1090px; /* 最小幅を1090pxに設定（これ以上は縮まない） *
+    border-collapse: separate; /* セルの境界線を個別に描画 *
+    border-spacing: 0; /* セル間の隙間を0にする *
+    background: #fff; /* 背景色を白に設定 *
+    border-radius: 12px; /* 角を12px丸める *
+    overflow: hidden; /* はみ出たコンテンツを隠す *
+
+    */
+}
+
+    /* ヘッダーセル */
+    /*
+    .device-table thead th {
+        position: sticky !important; /* スクロールしても位置を固定 *
+        top: 0; /* 上部に固定 *
+        z-index: 3; /* 他の要素より前面に表示 *
+        background: #f9fafb; /* 背景色を薄いグレーに設定 *
+        color: #374151; /* 文字色を濃いグレーに設定 *
+        text-align: left; /* テキストを左揃え *
+        padding: 10px 12px; /* 内側余白を設定 *
+        border-bottom: 1px solid var(--gray-200); /* 下部にボーダーを表示 /
+        font-weight: 600; /* フォントを太くする *
+    }
+    */
+
+    /* Safari向けにthead要素も固定 */
+    .device-table thead {
+        /*
+        position: sticky;
+        top: 0;
+        background: #f9fafb;
+        z-index: 1;
+        border-bottom: 1px solid #e5e7eb;
+        */
+
+        position: sticky;
+        top: 0;
+        background: #f9fafb;
+        z-index: 1;
+        border-bottom: 1px solid var(--gray-200); /* 下部にボーダーを表示 */
+        /*
+        position: sticky;
+        top: 0;
+        background: #f9fafb;
+        z-index: 1;
+        border-bottom: 1px solid #e5e7eb;
+        */
+        /*
+        position: sticky;
+        top: 0;
+        z-index: 4;
+        background: #f9fafb;
+        */
+        /*
+        position: sticky;
+        top: 0;
+        z-index: 4;
+        background: #f9fafb;
+        */
+    }
+
+    /* ヘッダーおよびボディのセルに適用するスタイル */
+    .device-table th,
+    .device-table td {
+        padding: 12px 14px; /* 内側余白を設定 */
+        white-space: nowrap; /* テキストを折り返さない */
+        border-bottom: 1px solid #e5e7eb; /* 下部にボーダーを表示 */
+        font-size: 14.5px; /* フォントサイズを設定 */
+    }
+
+.device-page, .table-wrapper {
+    max-width: none;
+    width: 100%;
+}
+
+
+/* 編集/削除ボタンのセル */
+
+
+/* 操作アイコン列 */
+/* 行頭のアイコンセル */
+.cell-icon {
+    width: 48px; /* 幅を固定 */
+    text-align: center; /* アイコンを中央に配置 */
+}
+
+/* アイコンボタンに適用するスタイル */
+.icon {
+    border: 1px solid #cbd5e1; /* 枠線を1px、実線、薄いグレーに設定 */
+    background: #fff; /* 背景色を白に設定 */
+    border-radius: 8px; /* 角を丸くする */
+    padding: 4px 8px; /* 内側余白 */
+    cursor: pointer; /* マウスカーソルをポインターに */
+}
+
+
+    /* ホバー時のアイコンボタン */
+    .icon:hover {
+        background: #eef1f6; /* 背景色を薄いグレーに */
+    }
+
+    /* 削除アイコンの色 */
+    .icon.danger {
+        border-color: var(--danger); /* 枠線を赤に */
+        color: var(--danger); /* 文字を赤に */
+        /*
+        color: #b91c1c;
+        border-color: #fecaca;
+        */
+    }
+
+    .icon.edit {
+        color: #111827;
+    }
+
+/* —— 初期表示の8列の幅（横スクロールなしで収める） —— */
+        .w-asset {
+    min-width: 80px;
+}
+
+.w-maker {
+    min-width: 80px;
+}
+
+.w-os {
+    min-width: 90px;
+}
+
+.w-mem {
+    min-width: 70px;
+    text-align: right;
+}
+
+.w-cap {
+    min-width: 80px;
+    text-align: right;
+}
+
+.w-gpu {
+    min-width: 110px;
+}
+
+.w-loc {
+    min-width: 120px;
+}
+
+.w-broken {
+    width: 50px;
+    text-align: center;
+}
+
+/* 詳細列 */
+.remarks {
+    min-width: 360px;
+}
+
+/* 小さめ画面向けの微調整（任意） */
+@media (max-width: 1440px) {
+    .w-asset {
+        min-width: 160px
+    }
+
+    .w-gpu {
+        min-width: 190px
+    }
+
+    .w-loc {
+        min-width: 160px
+    }
+}
+
+/* 行頭のアイコンセル */
+.cell-icon {
+    text-align: center;
+}
+
+.icon {
+    width: 36px;
+    height: 32px;
+    border-radius: 8px;
+    border: 1px solid var(--gray-300);
+    background: #f7f7fb;
+    cursor: pointer;
+}
+
+    .icon:hover {
+        background: #eef1f6;
+    }
+
+    .icon.danger {
+        border-color: var(--danger);
+        color: var(--danger);
+    }
+
+.broken.on {
+    color: var(--danger);
+    font-weight: 700;
+}
+
+/* ====== モーダル ====== */
+
+/* モーダル（前面に） */
+.modal-backdrop {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,.35);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 50;
+
+    /*
+    position: fixed; /* 画面に固定 *
+    inset: 0; /* 画面いっぱいに広げる *
+    background: rgba(0,0,0,.35); /* 半透明の黒い背景 *
+    display: flex; /* Flexboxを適用 *
+    align-items: center; /* 垂直方向の中央揃え *
+    justify-content: center; /* 水平方向の中央揃え *
+    z-index: 10000; /* 最前面に表示 *
+    */
+}
+
+.modal {
+    width: 860px;
+    max-width: calc(100vw - 40px);
+    max-height: 86vh;
+    background: #fff;
+    border-radius: 16px;
+    box-shadow: 0 20px 40px rgba(0,0,0,.15);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+.modal-header {
+    font-size: 20px;
+    font-weight: 700;
+    padding: 16px 20px;
+    border-bottom: 1px solid var(--gray-300);
+}
+
+.modal-body {
+    padding: 16px 20px;
+    overflow: auto;
+    flex: 1 1 auto;
+}
+
+/* 2カラムグリッドで見切れないように */
+.grid {
+    display: grid;
+    grid-template-columns: 160px 1fr 160px 1fr; /* ラベル/入力 × 2列 */
+    gap: 12px 16px;
+    align-items: center;
+}
+
+    .grid label {
+        justify-self: end;
+    }
+
+    .grid .area-label {
+        align-self: start;
+    }
+
+    .grid .area {
+        grid-column: span 3;
+        min-height: 120px;
+        resize: vertical;
+    }
+
+/* フッター（常に見える） */
+.modal-actions {
+    display: flex;
+    gap: 12px;
+    justify-content: flex-end;
+    padding: 12px 20px;
+    border-top: 1px solid var(--gray-300);
+    position: sticky;
+    bottom: 0;
+    background: #fff;
+}
+
+/* 削除確認 */
+.confirm {
+    width: 420px;
+    max-width: calc(100vw - 40px);
+    background: #fff;
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 20px 40px rgba(0,0,0,.15);
+}
+
+.confirm-title {
+    font-size: 20px;
+    font-weight: 700;
+    padding: 20px;
+    border-bottom: 1px solid var(--gray-300);
+}
+
+.confirm-actions {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+    padding: 16px;
+}
+
+:root {
+    --sidebar-width: 320px;
+    --panel-gutter: 48px;
+}
+
+/* 機器一覧専用の幅 */
+.panel--wide {
+    max-width: none; /* 上限撤廃（全幅を使う）*/
+    width: calc(100vw - var(--sidebar-width) - var(--panel-gutter));
+}
+
+/* ===== 機器一覧：Vostro向け最適化 ===== */
+
+/* 機器一覧カード自体の横幅（サイドバーに寄せる & 画面にフィット） */
+.device-panel {
+    /* 左マージン＝サイドバー幅＋余白。右側は自動で最大幅フィット */
+    margin-left: calc(var(--sidebar-w) + var(--panel-gutter));
+    max-width: min(var(--panel-max), calc(100vw - var(--sidebar-w) - 2 * var(--panel-gutter)));
+}
+
+/* 表の描画領域の高さ（ヘッダや余白を引いて“ちょうど良い”高さに） */
+.table-viewport {
+    height: calc(100vh - 260px);
+}
+
+/* 中画面（Vostro域）で詰める */
+@media (max-width: 1440px) {
+    .table-viewport {
+        height: calc(100vh - 240px);
+    }
+
+    .device-table th, .device-table td {
+        padding: 10px 12px;
+        font-size: 14.5px;
+        white-space: nowrap;
+    }
+}
+
+/* HDモデルではさらにコンパクトに */
+@media (max-width: 1366px) {
+    .device-panel {
+        max-width: min(980px, calc(100vw - var(--sidebar-w) - 2 * var(--panel-gutter)));
+    }
+
+    .table-viewport {
+        height: calc(100vh - 220px);
+    }
+
+    .device-table th, .device-table td {
+        font-size: 14px;
+    }
+}
+
+/* 機器一覧の <main class="panel flat devices-view"> に効かせる */
+.panel.devices-view { /* ① gap の再定義（面倒な margin-left 上書き不要） */
+    --gap-x: 8px; /* 0 にすればピッタリ寄る。8px は薄い余白 */
+}
+
+.panel.flat.devices-view { /* ② .panel.flat の左 padding を消す */
+    padding-left: 0;
+    padding-right: 0; /* 右も不要なら 0 に */
+}
+
+    /* ③ カード自体が中央寄せにならないように（念のため） */
+    .panel.flat.devices-view > .devices-card {
+        margin-left: 0; /* auto が残ってると中央寄せになる */
+        margin-right: 0;
+    }

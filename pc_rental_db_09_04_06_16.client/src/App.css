@@ -1,11 +1,42 @@
-﻿#root {
+﻿
+
+/* body要素全体に適用されるスタイル */
+body {
+
+    
+    /*margin: 0; /* ページの周囲の余白（マージン）を0に設定し、ブラウザのデフォルトスタイルを上書きします。 */
+    background-color: white; /* ページの背景色を白色に設定します。 */
+    /*font-family: system-ui, sans-serif; /* テキストのフォントを、システムの標準フォントに設定します。 */
+    /*min-height: 100vh; /* ページの最小の高さを、ブラウザの表示領域（ビューポート）の100%に設定します。 */
+    
+}
+
+
+
+
+
+
+/* id="root" を持つ要素に適用されるスタイル（Reactアプリのコンテナ） */
+#root {
     max-width: 1280px;
     margin: 0 auto;
     padding: 2rem;
     text-align: center;
+    
+    /*
+    max-width: none; /* 要素の最大幅の制限を解除し、親要素の幅を最大限に利用できるようにします。 *
+    margin: auto auto; /* 上下の余白は自動、左右の余白も自動で設定することで、要素を水平方向の中央に配置します。 *
+    padding: 0; /* 要素の内側の余白（パディング）を0に設定します。 *
+    text-align: left; /* 要素内のテキストを左揃えに設定します。 *
+    min-height: 100vh; /* 要素の最小の高さを、ブラウザの表示領域の100%に設定します。 *
+    display: flex; /* 要素をFlexboxコンテナとして設定し、子要素を柔軟に配置できるようにします。 *
+    justify-content: center; /* Flexboxの水平方向の配置を中央揃えにします。 *
+    align-items: center; /* Flexboxの垂直方向の配置を中央揃えにします。 *
+    */
 }
 
+/* th（テーブルヘッダー）とtd（テーブルセル）の要素に適用されるスタイル */
 th, td {
-    padding-left: 1rem;
-    padding-right: 1rem;
+    padding-left: 1rem; /* 要素の左側のパディングを1rem（ルート要素のフォントサイズの1倍）に設定します。 */
+    padding-right: 1rem; /* 要素の右側のパディングを1remに設定します。 */
 }

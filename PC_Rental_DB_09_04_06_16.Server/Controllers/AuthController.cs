@@ -7,7 +7,8 @@ using System.Text;
 namespace PC_Rental_DB_09_04_06_16.Server.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
+    [Route("auth")] // ← フロントの呼び出しに合わせて固定
+    //[Route("[controller]")]
     public class AuthController : ControllerBase
     {
         private readonly NpgsqlConnection _connection;
@@ -24,8 +25,16 @@ namespace PC_Rental_DB_09_04_06_16.Server.Controllers
         {
             public string EmployeeNo { get; set; } = string.Empty;
         }
+        public class PwRequest
+        {
+            public string EmployeeNo { get; set; } = string.Empty;
+            public string Password { get; set; } = string.Empty;
+        }
 
+
+        // ---------- 既存：平文ログイン（開発用） ----------
         // ---- /auth/login : 開発用・ハッシュ値比較 ----
+        // POST /auth/login
         [HttpPost("login")]
         public async Task<IActionResult> Login([FromBody] LoginRequest login)
         {
@@ -62,6 +71,8 @@ namespace PC_Rental_DB_09_04_06_16.Server.Controllers
             }
         }
 
+        // ---------- 既存：本人情報＋最新の貸出 ----------
+        // GET /auth/me?employeeNo=A1001
         // ---- /auth/me : 社員名＋貸出状況を返す ----
         [HttpGet("me")]
         public async Task<IActionResult> Me([FromQuery] string employeeNo)

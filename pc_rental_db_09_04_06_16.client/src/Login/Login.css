@@ -1,123 +1,96 @@
-/* ���O�C���y�[�W�̃X�^�C�� */
+﻿/* ログインページのスタイル */
 .login-box {
-    background-color: #a9a9a9; /* �O���[�w�i */
-    padding: 30px;
-    border-radius: 25px;
-    width: 350px;
-    margin: 100px auto;
-    text-align: left;
-}
+    background-color: #a9a9a9; /* 背景色を薄いグレーに設定 */
+    padding: 30px; /* 内側の余白を上下左右30pxに設定 */
+    border-radius: 25px; /* 要素の角を丸くする（半径25px） */
+    width: 350px; /* 幅を350pxに固定 */
+    margin: 250px auto;
+    text-align: left; /* ボックス内のテキストを左揃えにする */
 
-    .login-box h1 {
-        font-size: 2.5rem;
-        margin-bottom: 20px;
-    }
+   
 
-.form-group {
-    margin-bottom: 20px;
-}
-
-label {
-    display: block;
-    font-size: 1.5rem;
-    margin-bottom: 5px;
-}
-
-input {
-    width: 100%;
-    padding: 8px;
-    font-size: 1rem;
-    border: 1px solid #000;
-    border-radius: 2px;
-    box-sizing: border-box;
-}
-
-button {
-    display: block;
-    margin: 10px auto 0;
-    padding: 8px 20px;
-    font-size: 1rem;
-    border: 1px solid #555;
-    border-radius: 6px;
-    background-color: #eee;
-    cursor: pointer;
-}
-
-    button:hover {
-        background-color: #ddd;
-    }
-
-.error {
-    color: darkred;
-    font-size: 0.9rem;
-    margin-left: 8px;
-}
-
-    .error.general {
-        margin: 10px 0;
-        text-align: center;
-    }
-
-
-/*
-/* ���O�C���y�[�W�̃X�^�C�� 
-.login-box {
-    background-color: #a9a9a9; /* �O���[�w�i 
-    padding: 30px;
-    border-radius: 25px;
-    width: 350px;
-    margin: 100px auto;
-    text-align: left;
-}
-
-    .login-box h1 {
-        font-size: 2.5rem;
-        margin-bottom: 20px;
-    }
-
-.form-group {
-    margin-bottom: 20px;
-}
-
-label {
-    display: block;
-    font-size: 1.5rem;
-    margin-bottom: 5px;
-}
-
-input {
-    width: 100%;
-    padding: 8px;
-    font-size: 1rem;
-    border: 1px solid #000;
-    border-radius: 2px;
-    box-sizing: border-box;
-}
-
-button {
-    display: block;
-    margin: 10px auto 0;
-    padding: 8px 20px;
-    font-size: 1rem;
-    border: 1px solid #555;
-    border-radius: 6px;
-    background-color: #eee;
-    cursor: pointer;
-}
-
-    button:hover {
-        background-color: #ddd;
-    }
-
-.error {
-    color: darkred;
-    font-size: 0.9rem;
-    margin-left: 8px;
-}
-
-    .error.general {
-        margin: 10px 0;
-        text-align: center;
-    }
-    
+    /*
+    background-color: #a9a9a9; /* 背景色を薄いグレーに設定 *
+    padding: 30px; /* 内側の余白を上下左右30pxに設定 *
+    border-radius: 25px; /* 要素の角を丸くする（半径25px） *
+    width: 350px; /* 幅を350pxに固定 *
+    /* margin: auto auto; を削除またはコメントアウト *
+    text-align: left; /* ボックス内のテキストを左揃えにする *
     */
+}
+
+    .login-box h1 {
+        font-size: 2.5rem; /* フォントサイズを2.5remに設定 */
+        margin-bottom: 20px; /* 下側の外側余白を20pxに設定 */
+    }
+
+.form-group {
+    margin-bottom: 20px; /* 下側の外側余白を20pxに設定 */
+}
+
+label {
+    display: block; /* 要素をブロックレベルで表示 */
+    font-size: 1.5rem; /* フォントサイズを1.5remに設定 */
+    margin-bottom: 5px; /* 下側の外側余白を5pxに設定 */
+}
+
+input {
+    width: 100%; /* 親要素の幅いっぱいに広げる */
+    padding: 8px; /* 内側の余白を上下左右8pxに設定 */
+    font-size: 1rem; /* フォントサイズを1remに設定 */
+    border: 1px solid #000; /* 枠線を1px、実線、黒色に設定 */
+    border-radius: 2px; /* 枠線の角を丸くする（半径2px） */
+    box-sizing: border-box; /* 要素の幅にpaddingとborderを含める */
+}
+
+button {
+
+    display: block; /* 要素をブロックレベルで表示 */
+    margin: 10px auto 0; /* 上10px、左右自動で中央揃え、下0pxの外側余白を設定 */
+    padding: 8px 20px; /* 内側の余白を上下8px、左右20pxに設定 */
+    font-size: 1rem; /* フォントサイズを1remに設定 */
+    border: 1px solid #555; /* 枠線を1px、実線、濃いグレーに設定 */
+    border-radius: 6px; /* 枠線の角を丸くする（半径6px） */
+    background-color: #eee; /* デフォルトの背景色を薄いグレーに設定 */
+    color: #222; /* デフォルトの文字色を濃いグレーに設定 */
+    cursor: pointer; /* マウスカーソルをポインターに変更 */
+
+    /*
+    display: block;
+    margin: 10px auto 0;
+    padding: 8px 20px;
+    font-size: 1rem;
+    border: 1px solid #555;
+    border-radius: 6px;
+    background-color: #eee;
+    cursor: pointer;
+    */
+
+    /*
+    display: block; /* 要素をブロックレベルで表示 *
+    margin: 10px auto 0; /* 上10px、左右自動で中央揃え、下0pxの外側余白を設定 *
+    padding: 8px 20px; /* 内側の余白を上下8px、左右20pxに設定 *
+    font-size: 1rem; /* フォントサイズを1remに設定 *
+    border: 1px solid #555; /* 枠線を1px、実線、濃いグレーに設定 *
+    border-radius: 6px; /* 枠線の角を丸くする（半径6px） *
+    background-color: #eee; /* デフォルトの背景色を薄いグレーに設定 *
+    color: #222; /* デフォルトの文字色を濃いグレーに設定 *
+    cursor: pointer; /* マウスカーソルをポインターに変更 *
+    */
+}
+
+    button:hover {
+        background-color: #222; /* ホバー時の背景色を濃いグレーに設定 */
+        color: #eee; /* ホバー時の文字色を薄いグレーに設定 */
+    }
+
+.error {
+    color: darkred; /* 文字色を濃い赤色に設定 */
+    font-size: 0.9rem; /* フォントサイズを0.9remに設定 */
+    margin-left: 8px; /* 左側の外側余白を8pxに設定 */
+}
+
+    .error.general {
+        margin: 10px 0; /* 上下に10px、左右に0pxの外側余白を設定 */
+        text-align: center; /* テキストを中央揃えにする */
+    }
