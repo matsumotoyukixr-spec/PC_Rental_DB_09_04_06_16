@@ -1,4 +1,4 @@
-using Npgsql;
+ï»¿using Npgsql;
 using System.Text.Json;
 using System.Text.Encodings.Web;
 using System.Text.Unicode;
@@ -9,57 +9,58 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers()
     .AddJsonOptions(options =>
     {
-        // “ú–{ŒêiUTF-8j‚ğ³‚µ‚­ˆ—‚·‚é‚½‚ß‚Ìİ’è
+        // æ—¥æœ¬èªï¼ˆUTF-8ï¼‰ã‚’æ­£ã—ãå‡¦ç†ã™ã‚‹ãŸã‚ã®è¨­å®š
         options.JsonSerializerOptions.Encoder = JavaScriptEncoder.Create(UnicodeRanges.All);
         options.JsonSerializerOptions.PropertyNameCaseInsensitive = true;
     });
 
-// appsettings.json‚È‚Ç‚©‚çÚ‘±•¶š—ñ‚ğæ“¾‚·‚é
+// appsettings.jsonãªã©ã‹ã‚‰æ¥ç¶šæ–‡å­—åˆ—ã‚’å–å¾—ã™ã‚‹
 var connString = builder.Configuration.GetConnectionString("DefaultConnection");
 
 try
 {
     using var conn = new Npgsql.NpgsqlConnection(connString);
     conn.Open();
-    Console.WriteLine("ƒf[ƒ^ƒx[ƒX‚ÉÚ‘±‚Å‚«‚Ü‚µ‚½I");
+    Console.WriteLine("ãƒ‡ãƒ¼ã‚¿ãƒ™ãƒ¼ã‚¹ã«æ¥ç¶šã§ãã¾ã—ãŸï¼");
 }
 catch (Exception ex)
 {
-    Console.WriteLine($"ƒf[ƒ^ƒx[ƒX‚Ö‚ÌÚ‘±‚É¸”s‚µ‚Ü‚µ‚½: {ex.Message}");
+    Console.WriteLine($"ãƒ‡ãƒ¼ã‚¿ãƒ™ãƒ¼ã‚¹ã¸ã®æ¥ç¶šã«å¤±æ•—ã—ã¾ã—ãŸ: {ex.Message}");
 }
 
 builder.Services.AddScoped<NpgsqlConnection>(_ => new NpgsqlConnection(connString));
 
 /*
-// PostgreSQLÚ‘±ƒT[ƒrƒX‚ğ’Ç‰Á
-// appsettings.json‚È‚Ç‚©‚çÚ‘±•¶š—ñ‚ğæ“¾‚·‚é•û‚ª‚æ‚è—Ç‚¢•û–@‚Å‚·
+// PostgreSQLæ¥ç¶šã‚µãƒ¼ãƒ“ã‚¹ã‚’è¿½åŠ 
+// appsettings.jsonãªã©ã‹ã‚‰æ¥ç¶šæ–‡å­—åˆ—ã‚’å–å¾—ã™ã‚‹æ–¹ãŒã‚ˆã‚Šè‰¯ã„æ–¹æ³•ã§ã™
 string connString = "Host=localhost;Database=PC_Rental_DB;Username=postgres;Password=Yu20010809";
 
 try
 {
     using var conn = new Npgsql.NpgsqlConnection(connString);
     conn.Open();
-    Console.WriteLine("ƒf[ƒ^ƒx[ƒX‚ÉÚ‘±‚Å‚«‚Ü‚µ‚½I");
+    Console.WriteLine("ãƒ‡ãƒ¼ã‚¿ãƒ™ãƒ¼ã‚¹ã«æ¥ç¶šã§ãã¾ã—ãŸï¼");
 }
 catch (Exception ex)
 {
-    Console.WriteLine($"ƒf[ƒ^ƒx[ƒX‚Ö‚ÌÚ‘±‚É¸”s‚µ‚Ü‚µ‚½: {ex.Message}");
+    Console.WriteLine($"ãƒ‡ãƒ¼ã‚¿ãƒ™ãƒ¼ã‚¹ã¸ã®æ¥ç¶šã«å¤±æ•—ã—ã¾ã—ãŸ: {ex.Message}");
 }
 
 builder.Services.AddScoped<NpgsqlConnection>(_ => new NpgsqlConnection(connString));
 
 */
 
+
 var app = builder.Build();
 
 app.UseDefaultFiles();
 app.UseStaticFiles();
 
-// Swagger‚ğŠ®‘S‚É–³Œø‰»iŠJ”­ŠÂ‹«‚Å‚à‹N“®‚µ‚È‚¢j
+// Swaggerã‚’å®Œå…¨ã«ç„¡åŠ¹åŒ–ï¼ˆé–‹ç™ºç’°å¢ƒã§ã‚‚èµ·å‹•ã—ãªã„ï¼‰
 // Configure the HTTP request pipeline.
 // if (app.Environment.IsDevelopment())
 // {
-//     // Swagger‚ğ‹N“®‚µ‚È‚¢
+//     // Swaggerã‚’èµ·å‹•ã—ãªã„
 // }
 
 app.UseHttpsRedirection();
